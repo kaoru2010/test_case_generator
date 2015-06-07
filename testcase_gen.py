@@ -54,6 +54,17 @@ def merge_list(*list_of_state_list):
 
     return merge_list(result, *list_of_state_list[2:])
 
+def sequential(*list_of_state_list):
+    if len(list_of_state_list) <= 1:
+        return list_of_state_list[0]
+
+    result = []
+    for list1 in list_of_state_list[0]:
+        for list2 in list_of_state_list[1]:
+            result.append(list1 + list2)
+
+    return sequential(result, *list_of_state_list[2:])
+
 
 state_map1 = StateMap(
         state_list = [
@@ -92,7 +103,7 @@ state_map2  = StateMap(
     )
 
 limit = 2
-for result in merge_list(state_map1.gen_all_list(limit), state_map2.gen_all_list(limit)):
+for result in sequential([['onCreate']], merge_list(state_map1.gen_all_list(limit), state_map2.gen_all_list(limit))):
     print result
 
 #for result1 in state_map1.gen_all_list(limit):
