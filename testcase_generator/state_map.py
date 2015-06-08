@@ -4,12 +4,16 @@
 import itertools
 
 class StateMap:
-    def __init__(self, state_list, transition_table, start):
+    def __init__(self, state_list, transition_table, start, max_visited_count = 1):
         self.state_list = state_list;
         self.transition_table = transition_table;
         self.start = start
+        self.max_visited_count = max_visited_count
 
-    def gen_all_list(self, max_visited_count = 1):
+    def gen_all_list(self, max_visited_count = None):
+        if max_visited_count is None:
+            max_visited_count = self.max_visited_count
+
         all_list = []
         self._walk(all_list, self.start, max_visited_count)
         return all_list
