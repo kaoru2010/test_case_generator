@@ -1,0 +1,51 @@
+from testcase_generator.state_map import StateMap
+from testcase_generator.utils import merge_list
+from testcase_generator.utils import sequential
+
+state_map1 = StateMap(
+        state_list = [
+            'onStart',
+            'onResume',
+            'onPause',
+            'onStop',
+            'onDestroy',
+        ],
+
+        transition_table = [
+            [1, 3],
+            [2],
+            [1, 3],
+            [0, 4],
+            [],
+        ],
+
+        start = 0,
+        max_visited_count = 2
+    )
+
+state_map2  = StateMap(
+        state_list = [
+            'surfaceCreated',
+            'surfaceChanged',
+            'surfaceDestroyed',
+        ],
+
+        transition_table = [
+            [1, 2],
+            [1, 2],
+            [],
+        ],
+
+        start = 0,
+        max_visited_count = 2
+    )
+
+TESTCASE_DEF['class'] = 'TheExampleDataSource'
+
+TESTCASE_DEF['labels'] = [
+    'surfaceCreated',
+    'surfaceChanged',
+    'surfaceDestroyed',
+]
+
+TESTCASE_DEF['data'] = state_map2.gen_all_list()
