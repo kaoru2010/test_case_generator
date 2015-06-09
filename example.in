@@ -43,9 +43,14 @@ state_map2  = StateMap(
 TESTCASE_DEF['class'] = 'TheExampleDataSource'
 
 TESTCASE_DEF['labels'] = [
+    'onStart',
+    'onResume',
+    'onPause',
+    'onStop',
+    'onDestroy',
     'surfaceCreated',
     'surfaceChanged',
     'surfaceDestroyed',
 ]
 
-TESTCASE_DEF['data'] = state_map2.gen_all_list()
+TESTCASE_DEF['data'] = merge_list(state_map1.gen_all_list(), state_map2.gen_all_list())
