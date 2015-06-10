@@ -5,6 +5,7 @@ import itertools
 from optparse import OptionParser
 
 from testcase_generator.android import print_java
+from testcase_generator.python import print_python
 
 #for result in sequential([['onCreate']], merge_list(state_map1.gen_all_list(), state_map2.gen_all_list())):
 #    print result
@@ -40,8 +41,13 @@ if options.package:
 if options.class_name:
     TESTCASE_DEF['class_name'] = options.class_name
 
+if args[1].endswith('.java'):
+    perform_output = print_java
+elif args[1].endswith('.py'):
+    perform_output = print_python
+
 with open(args[1], 'w') as out:
-    print_java(
+    perform_output(
         out,
         TESTCASE_DEF['package'],
         TESTCASE_DEF['import_list'],
