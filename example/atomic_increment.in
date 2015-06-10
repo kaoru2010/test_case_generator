@@ -1,0 +1,15 @@
+from testcase_generator.state_map import StateMap
+from testcase_generator.utils import merge_list
+from testcase_generator.utils import sequential
+
+TESTCASE_DEF['class_name'] = 'AtomicIncrementDataSource'
+
+TESTCASE_DEF['labels'] = [
+    'userA',
+    'userB',
+]
+
+TESTCASE_DEF['data'] = merge_list(
+    [['userA'] * 3],
+    [['userB'] * 3]
+)
