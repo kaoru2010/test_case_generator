@@ -1,6 +1,6 @@
 from testcase_generator.state_map import StateMap
-from testcase_generator.utils import merge_list
-from testcase_generator.utils import sequential
+from testcase_generator.utils import sequential_combinations as SEQ
+from testcase_generator.utils import parallel_combinations as PARA
 
 TESTCASE_DEF['class_name'] = 'AtomicIncrementDataSource'
 
@@ -9,7 +9,7 @@ TESTCASE_DEF['labels'] = [
     'userB',
 ]
 
-TESTCASE_DEF['data'] = merge_list(
+TESTCASE_DEF['data'] = PARA(
     [['userA'] * 3],
     [['userB'] * 3]
 )

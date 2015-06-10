@@ -18,7 +18,7 @@ def gen_combination(list1, list2):
     for combination in itertools.combinations(range(0, len(list1) + len(list2)), len(list1)):
         yield [x for x in gen_merged(list1, list2, combination)]
 
-def merge_list(*list_of_state_list):
+def parallel_combinations(*list_of_state_list):
     if len(list_of_state_list) <= 1:
         return list_of_state_list[0]
 
@@ -27,9 +27,9 @@ def merge_list(*list_of_state_list):
         for list2 in list_of_state_list[1]:
             result.extend([x for x in gen_combination(list1, list2)])
 
-    return merge_list(result, *list_of_state_list[2:])
+    return parallel_combinations(result, *list_of_state_list[2:])
 
-def sequential(*list_of_state_list):
+def sequential_combinations(*list_of_state_list):
     if len(list_of_state_list) <= 1:
         return list_of_state_list[0]
 
@@ -38,4 +38,4 @@ def sequential(*list_of_state_list):
         for list2 in list_of_state_list[1]:
             result.append(list1 + list2)
 
-    return sequential(result, *list_of_state_list[2:])
+    return sequential_combinations(result, *list_of_state_list[2:])

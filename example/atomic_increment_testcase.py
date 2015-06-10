@@ -3,8 +3,19 @@
 
 import unittest
 
-from event_sequence_list_testing.test_generator import event_sequence_test
-from atomic_increment import ExampleDataSource
+from event_sequence_list_testing.test_generator import event_sequence_test_raw
+
+from testcase_generator.state_map import StateMap
+from testcase_generator.utils import sequential_combinations as SEQ
+from testcase_generator.utils import parallel_combinations as PARA
+
+def ignore_StopIteration(f):
+    def _(self):
+        try:
+            f(self)
+        except StopIteration:
+            pass
+    return _
 
 class Context:
     def __init__(self, value):
@@ -19,15 +30,9 @@ def logic(context):
 
     context.value = tmp
 
-def ignore_StopIteration(f):
-    def _(self):
-        try:
-            f(self)
-        except StopIteration:
-            pass
-    return _
+N = 3
 
-@event_sequence_test(ExampleDataSource())
+@event_sequence_test_raw(labels=['userA', 'userB'], data=PARA([[0] * N], [[1] * N]))
 class TestAtomicIncrement(unittest.TestCase):
     def setUp(self):
         self.context = Context(0)

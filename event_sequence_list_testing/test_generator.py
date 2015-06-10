@@ -18,5 +18,5 @@ def _event_sequence_test_impl(labels, data):
 def event_sequence_test(data_source):
     return _event_sequence_test_impl(data_source.getLabels(), data_source.getData())
 
-def event_sequence_test_raw(data_source):
-    return _event_sequence_test_impl(data_source['labels'], data_source['data'])
+def event_sequence_test_raw(labels, data):
+    return _event_sequence_test_impl(labels, data)

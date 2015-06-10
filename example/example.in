@@ -1,6 +1,6 @@
 from testcase_generator.state_map import StateMap
-from testcase_generator.utils import merge_list
-from testcase_generator.utils import sequential
+from testcase_generator.utils import sequential_combinations as SEQ
+from testcase_generator.utils import parallel_combinations as PARA
 
 state_map1 = StateMap(
         state_list = [
@@ -54,4 +54,4 @@ TESTCASE_DEF['labels'] = [
 ]
 
 TESTCASE_DEF['data'] = state_map1.gen_all_list()
-# TESTCASE_DEF['data'] = merge_list(state_map1.gen_all_list(), state_map2.gen_all_list())
+# TESTCASE_DEF['data'] = PARA(state_map1.gen_all_list(), state_map2.gen_all_list())
