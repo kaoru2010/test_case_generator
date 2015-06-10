@@ -6,16 +6,9 @@ import unittest
 from event_sequence_list_testing.test_generator import event_sequence_test_raw
 
 from testcase_generator.state_map import StateMap
+from testcase_generator.utils import ignore_StopIteration
 from testcase_generator.utils import sequential_combinations as SEQ
 from testcase_generator.utils import parallel_combinations as PARA
-
-def ignore_StopIteration(f):
-    def _(self):
-        try:
-            f(self)
-        except StopIteration:
-            pass
-    return _
 
 class Context:
     def __init__(self, value):

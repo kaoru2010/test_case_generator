@@ -39,3 +39,11 @@ def sequential_combinations(*list_of_state_list):
             result.append(list1 + list2)
 
     return sequential_combinations(result, *list_of_state_list[2:])
+
+def ignore_StopIteration(f):
+    def _(self):
+        try:
+            f(self)
+        except StopIteration:
+            pass
+    return _
