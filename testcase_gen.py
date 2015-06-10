@@ -6,6 +6,7 @@ from optparse import OptionParser
 
 from testcase_generator.android import print_java
 from testcase_generator.python import print_python
+from testcase_generator.php import print_php
 
 #for result in sequential([['onCreate']], merge_list(state_map1.gen_all_list(), state_map2.gen_all_list())):
 #    print result
@@ -45,6 +46,8 @@ if args[1].endswith('.java'):
     perform_output = print_java
 elif args[1].endswith('.py'):
     perform_output = print_python
+elif args[1].endswith('.php'):
+    perform_output = print_php
 
 with open(args[1], 'w') as out:
     perform_output(
