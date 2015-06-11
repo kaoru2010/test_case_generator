@@ -6,10 +6,29 @@ TESTCASE_DEF['class_name'] = 'AtomicIncrementDataSource'
 
 TESTCASE_DEF['labels'] = [
     'userA',
+    'crashA',
+    'resetA',
     'userB',
+    'crashB',
+    'resetB',
 ]
 
-TESTCASE_DEF['data'] = PARA(
-    [['userA'] * 3],
-    [['userB'] * 3]
+TESTCASE_DEF['data'] = \
+PARA(
+    SEQ(
+        PARA(
+            [['userA'] * 3],
+            [['crashA']]
+        ),
+        [['resetA']],
+        [['userA'] * 3]
+    ),
+    SEQ(
+        PARA(
+            [['userB'] * 3],
+            [['crashB']]
+        ),
+        [['resetB']],
+        [['userB'] * 3]
+    )
 )

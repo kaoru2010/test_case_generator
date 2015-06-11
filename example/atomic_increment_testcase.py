@@ -14,34 +14,78 @@ class Context:
     def __init__(self, value):
         self.value = value
 
-def logic(context):
-    tmp = context.value
-    yield
 
-    tmp += 1
-    yield
+class Process(object):
+    def __init__(self, context):
+        self.context = context
+        self.terminated = False
+        self.crashed = False
+        self.logic = self._logic()
 
-    context.value = tmp
+    def run(self):
+        if self.terminated:
+            return
 
-N = 3
+        try:
+            self.logic.next()
+        except StopIteration:
+            self.terminated = True
 
-@event_sequence_test_raw(labels=['userA', 'userB'], data=PARA([[0] * N], [[1] * N]))
+    def crash(self):
+        if self.terminated:
+            return
+
+        self.logic.close()
+        self.terminated = True
+        self.crashed = True
+
+
+class AtomicIncrementProcess(Process):
+    "最大yieldの数 + 1"
+    N = 3
+
+    def _logic(self):
+        yield
+
+        yield
+
+        tmp = self.context.value
+        tmp += 1
+        self.context.value = tmp
+
+data = SEQ(
+    PARA(
+        PARA([[0] * AtomicIncrementProcess.N], [[2]]),
+        PARA([[1] * AtomicIncrementProcess.N], [[3]])
+    )
+)
+
+@event_sequence_test_raw(labels=['userA', 'userB', 'crashA', 'crashB', 'reset'], data=data)
 class TestAtomicIncrement(unittest.TestCase):
     def setUp(self):
         self.context = Context(0)
-        self.connectionA = logic(self.context)
-        self.connectionB = logic(self.context)
+        self.connectionA = AtomicIncrementProcess(self.context)
+        self.connectionB = AtomicIncrementProcess(self.context)
 
     def tearDown(self):
-        self.assertEqual(2, self.context.value)
+        if self.connectionA.crashed and self.connectionB.crashed:
+            self.assertEqual(0, self.context.value)
+        elif (not self.connectionA.crashed) and (not self.connectionB.crashed):
+            self.assertEqual(2, self.context.value)
+        else:
+            self.assertEqual(1, self.context.value)
 
-    @ignore_StopIteration
     def userA(self):
-        self.connectionA.next()
+        self.connectionA.run()
 
-    @ignore_StopIteration
+    def crashA(self):
+        self.connectionA.crash()
+
     def userB(self):
-        self.connectionB.next()
+        self.connectionB.run()
+
+    def crashB(self):
+        self.connectionB.crash()
 
 if __name__ == '__main__':
     unittest.main()
